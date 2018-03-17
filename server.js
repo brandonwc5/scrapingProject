@@ -23,13 +23,13 @@ db.on("error", function(error) {
 });
 
 // Main route (simple Hello World Message)
-app.get("/", function(req, res) {
-    res.send(./public/assets/index.js);
-  });
+// app.get("/", function(req, res) {
+//     res.send(./public/assets/index.js);
+//   });
 
-app.get("/saved", function(req,res){
-    res.send("Hiya Earth");
-})
+// app.get("/saved", function(req,res){
+//     res.send("Hiya Earth");
+// })
 request("https://www.reddit.com/r/AcademicPhilosophy/", function(err, response, html){
     var $= cheerio.load(html);
     var results = [];
@@ -43,6 +43,14 @@ request("https://www.reddit.com/r/AcademicPhilosophy/", function(err, response, 
     })
     console.log(results);
 })
+
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoScraper";
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI, {})
+
+require("./routes/apiRoutes.js")(app);
+require("./routes/view.js")(app);
+
 app.listen(3000, function(){
     console.log("Listening on port 3000");
 })
